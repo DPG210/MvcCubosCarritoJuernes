@@ -67,5 +67,29 @@ namespace MvcCubosCarritoJuernes.Repositories
             }
             return listaCubos;
         }
+        public int GetMaxId()
+        {
+            var consulta= from datos in this.context.Compras
+                          select datos;
+            if (this.context.Compras.Any())
+            {
+                return this.context.Compras.Max(z => z.Id_compra);
+            }
+            else
+            {
+                return 0; 
+            }
+        }
+        public async Task InsertCompra(int idCubo, int cantidad, int precio)
+        {
+            Compra compra = new Compra();
+            compra.Id_compra = GetMaxId()+1;
+            compra.Id_cubo = idCubo;
+            compra.Precio = precio;
+            compra.Cantidad = cantidad;
+            compra.Fechapedido = DateTime.Now;
+            this.context.Compras.Add(compra);
+            await this.context.SaveChangesAsync();
+        }
     }
 }

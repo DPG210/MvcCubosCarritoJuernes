@@ -17,12 +17,19 @@ else{
                 <th>Marca</th>
                 <th>Imagen</th>
                 <th>Precio</th>
+                <th>Cantidad</th>
+                <th>Subtotal</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
 
-            @foreach (Cubo cubo in Model)
-            {
+                @foreach (var grupo in Model.GroupBy(x => x.IdCubo))
+                {
+                    
+                    Cubo cubo = grupo.First();
+                    int cantidad = grupo.Count();
+                    int subtotal = cubo.Precio * cantidad;
                 <tr>
                     <td>@cubo.IdCubo</td>
                     <td>@cubo.Nombre</td>
@@ -32,8 +39,10 @@ else{
                         <img src="~/images/cubos/@cubo.Imagen" style="width:50px;height:50px" />
                     </td>
                     <td>@cubo.Precio</td>
+                    <td><strong>@cantidad</strong></td>
+                    <td>@subtotal €</td>
                     <td>
-                        <a asp-asp-controller="Cubos" asp-action="CubosSession" asp-route-ideliminar="@cubo.IdCubo" class="btn btn-warning">Eliminar</a>
+                        <a asp-controller="Cubos" asp-action="CubosSession" asp-route-ideliminar="@cubo.IdCubo" class="btn btn-warning">Eliminar</a>
                     </td>
                 </tr>
             }
@@ -41,5 +50,9 @@ else{
 
         </tbody>
     </table>
+        <h1>Total de prevcio: @Model.Sum(z => z.Precio)</h1>
+        <form method="post" asp-route-accion="comprar">
+            <button>Realizar carrito</button>
+        </form>
 }
 }

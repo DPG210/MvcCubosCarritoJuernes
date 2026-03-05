@@ -115,7 +115,7 @@ namespace MvcCubosCarritoJuernes.Controllers
             }
             return View();
         }
-        public async Task <IActionResult> CubosSession(int? ideliminar)
+        public async Task <IActionResult> Carrito(int? ideliminar)
         {
             List<int> idsCubos =
                 HttpContext.Session.GetObject<List<int>>("IDSCUBOS");
@@ -141,6 +141,26 @@ namespace MvcCubosCarritoJuernes.Controllers
             List<Cubo> cubos =
                  await  this.repo.GetCubosSessionAsync(idsCubos);
             return View(cubos);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Carrito(string accion)
+        {
+            List<int> idsCubos = HttpContext.Session.GetObject<List<int>>("IDSCUBOS");
+            if (idsCubos == null)
+            {
+                ViewData["MENSAJE"] = "Sin cubos";
+            }
+            
+            
+            List<Cubo> cubos =
+                 await this.repo.GetCubosSessionAsync(idsCubos);
+            ;
+            foreach (var item in cubos)
+            {
+                await this.repo.InsertCompra(item.IdCubo, 1, item.Precio);
+            }
+            HttpContext.Session.Remove("IDSCUBOS");
+            return RedirectToAction("Cubos");
         }
     }
 }
