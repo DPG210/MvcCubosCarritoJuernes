@@ -1,0 +1,36 @@
+﻿@model Cubo
+
+@{
+    ViewData["Title"] = "DetallesCubos";
+}
+
+<h1>DetallesCubos</h1>
+@if(Model!=null){
+    <table class="table table-striped-colums">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>Modelo</th>
+                <th>Marca</th>
+                <th>Imagen</th>
+                <th>Precio</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+            
+                <tr>
+                    <td>@Model.IdCubo</td>
+                    <td>@Model.Nombre</td>
+                    <td>@Model.Modelo</td>
+                    <td>@Model.Marca</td>
+                    <td>
+                    <img src="~/images/cubos/@Model.Imagen" style="width:50px;height:50px" />
+                    </td>
+                    <td>@Model.Precio</td>
+                </tr>
+            
+        </tbody>
+    </table>
+}

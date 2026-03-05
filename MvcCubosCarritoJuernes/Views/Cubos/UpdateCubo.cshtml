@@ -1,0 +1,17 @@
+﻿@model Cubo
+<h1>Update Cubo</h1>
+<form method="post" >
+    <label>IdCubo</label>
+    <input type="hidden" name="idcubo" value="@Model.IdCubo" class="form-control" readonly/>
+    <label>Nombre</label>
+    <input type="text" name="nombre" value="@Model.Nombre" class="form-control" />
+    <label>Modelo</label>
+    <input type="text" name="modelo" value="@Model.Modelo" class="form-control" />
+    <label>Marca</label>
+    <input type="text" name="marca" value="@Model.Marca" class="form-control" />
+    <label>Seleccione imagen</label>
+    <input type="hidden" name="imagen" value="@Model.Imagen" class="form-control" />
+    <label>Precio</label>
+    <input type="number" name="precio" value="@Model.Precio" class="form-control" />
+    <button class="btn btn-success">Actualizar</button>
+</form>
