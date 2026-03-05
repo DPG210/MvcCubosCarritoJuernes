@@ -115,9 +115,32 @@ namespace MvcCubosCarritoJuernes.Controllers
             }
             return View();
         }
-        public async Task <IActionResult> CarritoCompra(int? ideliminar)
+        public async Task <IActionResult> CubosSession(int? ideliminar)
         {
-
+            List<int> idsCubos =
+                HttpContext.Session.GetObject<List<int>>("IDSCUBOS");
+            if(idsCubos == null)
+            {
+                ViewData["MENSAJE"] = "Sin cubos";
+            }
+            else
+            {
+                if (ideliminar != null)
+                {
+                    idsCubos.Remove(ideliminar.Value);
+                    if(idsCubos.Count == 0)
+                    {
+                        HttpContext.Session.Remove("IDSCUBOS");
+                    }
+                    else
+                    {
+                        HttpContext.Session.SetObject("IDSCUBOS", idsCubos);
+                    }
+                }
+            }
+            List<Cubo> cubos =
+                 await  this.repo.GetCubosSessionAsync(idsCubos);
+            return View(cubos);
         }
     }
 }

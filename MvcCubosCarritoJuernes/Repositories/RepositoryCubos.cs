@@ -50,5 +50,22 @@ namespace MvcCubosCarritoJuernes.Repositories
 
             await this.context.Database.ExecuteSqlRawAsync(sql, pamId, pamNom, pamMod, pamMarca, pamPrecio);
         }
+        public async Task<List<Cubo>> GetCubosSessionAsync(List<int> idsCubos)
+        {
+            var consulta = from datos in this.context.Cubos
+                           where idsCubos.Contains(datos.IdCubo)
+                           select datos;
+            var cubosDb= await consulta.ToListAsync();
+            List<Cubo> listaCubos = new List<Cubo>();
+            foreach(int id in idsCubos)
+            {
+                Cubo c = cubosDb.FirstOrDefault(x => x.IdCubo == id);
+                if (c != null)
+                {
+                    listaCubos.Add(c);
+                }
+            }
+            return listaCubos;
+        }
     }
 }
